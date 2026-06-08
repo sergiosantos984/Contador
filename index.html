@@ -2,19 +2,15 @@
 <html lang="pt-PT">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Contagem para Cabo Verde — Ilha do Sal 🌴</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Descobre Cabo Verde — Ilha do Sal 🌴</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --ocean: #006994;
     --turquoise: #40E0D0;
-    --sand: #F5DEB3;
-    --coral: #FF6B6B;
-    --sky: #87CEEB;
-    --deep: #003f5c;
+    --deep: #02111A;
     --white: #FEFEFE;
     --gold: #FFD700;
   }
@@ -24,316 +20,90 @@
     height: 100%;
     overflow-x: hidden;
     font-family: 'Josefin Sans', sans-serif;
-  }
-
-  body {
     background: var(--deep);
     color: var(--white);
-    min-height: 100vh;
-    position: relative;
+    -webkit-tap-highlight-color: transparent;
   }
 
-
-
-  /* ===== FOTOGRAFIAS REAIS DE CABO VERDE ===== */
-  .photo-backdrop {
+  /* ===== BACKDROP MORPH SLIDER LAYER ===== */
+  .slider-container {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
-    background:
-      linear-gradient(180deg, rgba(0, 25, 45, 0.15), rgba(0, 20, 35, 0.65)),
-      url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Beach%20at%20Santa%20Maria%2C%20Cape%20Verde%20%284334749582%29.jpg?width=1600") center/cover no-repeat;
+    background-color: var(--deep);
   }
 
-  .photo-backdrop::before,
-  .photo-backdrop::after {
-    content: '';
+  .slide-bg {
     position: absolute;
     inset: 0;
     background-size: cover;
     background-position: center;
-    opacity: 0.34;
-    mix-blend-mode: screen;
-    filter: saturate(1.15) contrast(1.05);
+    background-repeat: no-repeat;
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
   }
 
-  .photo-backdrop::before {
-    clip-path: polygon(0 0, 42% 0, 26% 100%, 0 100%);
-    background-image: url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Fishing%20boat%20Santa%20Maria%2C%20Sal%2C%20Cape%20Verde%20%284334785956%29.jpg?width=1200");
+  .slide-bg.active {
+    opacity: 1;
+    transform: scale(1);
   }
 
-  .photo-backdrop::after {
-    clip-path: polygon(68% 0, 100% 0, 100% 100%, 48% 100%);
-    background-image: url("https://commons.wikimedia.org/wiki/Special:Redirect/file/Sal_SantaMaria.jpg?width=1200");
-  }
-
-  .photo-backdrop .photo-softener {
+  .slider-overlay {
     position: absolute;
     inset: 0;
-    background:
-      radial-gradient(circle at 50% 44%, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.38) 52%, rgba(0,0,0,0.68) 100%),
-      linear-gradient(180deg, rgba(0, 140, 170, 0.20), rgba(0, 40, 70, 0.55));
-    backdrop-filter: blur(1px);
-  }
-
-  /* ===== ANIMATED OCEAN BACKGROUND ===== */
-  .bg-scene {
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    opacity: 0.72;
-    overflow: hidden;
-  }
-
-  /* Sky gradient */
-  .sky-layer {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(180deg, rgba(10,22,40,0.22), rgba(38,112,160,0.12), rgba(168,228,240,0.06));
-  }
-
-  /* Animated sun */
-  .sun {
-    position: absolute;
-    top: 12%;
-    right: 15%;
-    width: 70px;
-    height: 70px;
-    background: radial-gradient(circle, #FFE066 0%, #FFD700 40%, #FF9500 80%, transparent 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 40px 20px rgba(255, 200, 0, 0.3), 0 0 80px 40px rgba(255, 150, 0, 0.15);
-    animation: sunPulse 4s ease-in-out infinite;
-  }
-  @keyframes sunPulse {
-    0%, 100% { box-shadow: 0 0 40px 20px rgba(255,200,0,0.3), 0 0 80px 40px rgba(255,150,0,0.15); }
-    50% { box-shadow: 0 0 60px 30px rgba(255,200,0,0.45), 0 0 120px 60px rgba(255,150,0,0.2); }
-  }
-
-  /* Clouds */
-  .cloud {
-    position: absolute;
-    background: rgba(255,255,255,0.15);
-    border-radius: 50px;
-    filter: blur(8px);
-  }
-  .cloud::before, .cloud::after {
-    content: '';
-    position: absolute;
-    background: inherit;
-    border-radius: 50px;
-  }
-  .c1 { width: 120px; height: 30px; top: 8%; left: -20%; animation: drift 35s linear infinite; }
-  .c1::before { width: 60px; height: 40px; top: -15px; left: 20px; }
-  .c1::after { width: 80px; height: 35px; top: -10px; right: 15px; }
-  .c2 { width: 90px; height: 22px; top: 15%; left: -15%; animation: drift 48s linear infinite 12s; opacity: 0.7; }
-  .c2::before { width: 50px; height: 30px; top: -12px; left: 15px; }
-  .c3 { width: 150px; height: 28px; top: 5%; left: -25%; animation: drift 55s linear infinite 25s; opacity: 0.5; }
-  @keyframes drift { from { left: -30%; } to { left: 110%; } }
-
-  /* Ocean water */
-  .ocean {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 45%;
-    background: linear-gradient(
-      180deg,
-      #38a8c8 0%,
-      #1a7fa8 15%,
-      #006994 35%,
-      #005080 60%,
-      #003f65 100%
-    );
-  }
-
-  /* Wave layers */
-  .waves-container {
-    position: absolute;
-    bottom: 43%;
-    left: 0;
-    right: 0;
-    height: 80px;
-    overflow: hidden;
-  }
-
-  .wave {
-    position: absolute;
-    bottom: 0;
-    left: -100%;
-    width: 300%;
-    height: 100%;
-    border-radius: 40%;
-  }
-  .wave1 {
-    background: rgba(64, 224, 208, 0.4);
-    animation: wave 8s ease-in-out infinite;
-  }
-  .wave2 {
-    background: rgba(100, 210, 220, 0.3);
-    animation: wave 10s ease-in-out infinite reverse;
-    bottom: 5px;
-  }
-  .wave3 {
-    background: rgba(180, 240, 255, 0.2);
-    animation: wave 12s ease-in-out infinite 2s;
-    bottom: 10px;
-  }
-  @keyframes wave {
-    0% { transform: translateX(0) rotate(0deg); }
-    50% { transform: translateX(10%) rotate(2deg); }
-    100% { transform: translateX(0) rotate(0deg); }
-  }
-
-  /* Foam sparks on waves */
-  .foam-dot {
-    position: absolute;
-    background: rgba(255,255,255,0.7);
-    border-radius: 50%;
-    animation: foamFade 3s ease-in-out infinite;
-  }
-  @keyframes foamFade {
-    0%, 100% { opacity: 0; transform: scale(0.5); }
-    50% { opacity: 1; transform: scale(1); }
-  }
-
-  /* Sand beach */
-  .sand-beach {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 18%;
-    background: linear-gradient(
-      180deg,
-      #e8c97a 0%,
-      #d4a843 30%,
-      #c9974a 70%,
-      #b8864a 100%
-    );
-    border-radius: 60% 60% 0 0 / 30px 30px 0 0;
-  }
-
-  /* Sand texture dots */
-  .sand-beach::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(0,0,0,0.08) 1px, transparent 1px);
-    background-size: 8px 8px;
-    opacity: 0.5;
-  }
-
-  /* Palm trees */
-  .palm {
-    position: absolute;
-    bottom: 16%;
-  }
-  .palm-trunk {
-    width: 8px;
-    background: linear-gradient(180deg, #5d4037, #795548);
-    border-radius: 4px;
-    transform-origin: bottom center;
-  }
-  .palm-left .palm-trunk { height: 90px; transform: rotate(-15deg); left: 20px; }
-  .palm-right .palm-trunk { height: 75px; transform: rotate(12deg); }
-
-  .palm-fronds {
-    position: absolute;
-    top: -10px;
-  }
-  .palm-left .palm-fronds { left: -25px; }
-  .palm-right .palm-fronds { right: -5px; }
-
-  .frond {
-    position: absolute;
-    width: 55px;
-    height: 12px;
-    background: linear-gradient(90deg, #2d7a2d, #4CAF50, #81C784);
-    border-radius: 0 50% 50% 0;
-    transform-origin: left center;
-  }
-
-  .palm-left { left: 0; }
-  .palm-right { right: 10px; }
-
-  /* Starfish on sand */
-  .starfish {
-    position: absolute;
-    font-size: 18px;
-    animation: starfishWiggle 6s ease-in-out infinite;
-    bottom: 5%;
-  }
-  @keyframes starfishWiggle {
-    0%, 100% { transform: rotate(0deg); }
-    50% { transform: rotate(15deg); }
-  }
-
-  /* Seagulls */
-  .seagull {
-    position: absolute;
-    font-size: 16px;
-    animation: gullFly linear infinite;
-    opacity: 0.7;
-  }
-  .g1 { top: 22%; animation-duration: 20s; animation-delay: 0s; }
-  .g2 { top: 28%; animation-duration: 25s; animation-delay: 8s; font-size: 12px; }
-  .g3 { top: 18%; animation-duration: 30s; animation-delay: 15s; font-size: 10px; }
-  @keyframes gullFly {
-    from { left: -5%; }
-    to { left: 110%; }
-  }
-
-  /* Shimmer on water */
-  .water-shimmer {
-    position: absolute;
-    bottom: 20%;
-    left: 0;
-    right: 0;
-    height: 20%;
-    background: repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 30px,
-      rgba(255,255,255,0.04) 30px,
-      rgba(255,255,255,0.04) 35px
-    );
-    animation: shimmerMove 4s linear infinite;
-  }
-  @keyframes shimmerMove {
-    from { transform: translateX(0); }
-    to { transform: translateX(35px); }
-  }
-
-  /* Flying fish / sparkles */
-  .sparkle {
-    position: absolute;
-    color: rgba(255,215,0,0.8);
-    font-size: 14px;
-    animation: twinkle 3s ease-in-out infinite;
-  }
-  @keyframes twinkle {
-    0%, 100% { opacity: 0; transform: scale(0.5) rotate(0deg); }
-    50% { opacity: 1; transform: scale(1) rotate(180deg); }
-  }
-
-  /* Overlay for readability */
-  .content-overlay {
-    position: fixed;
-    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.85) 100__);
     z-index: 1;
-    background: linear-gradient(
-      180deg,
-      rgba(0,0,0,0.15) 0%,
-      rgba(0,0,0,0.05) 30%,
-      rgba(0,0,0,0.1) 60%,
-      rgba(0,0,0,0.3) 100%
-    );
     pointer-events: none;
   }
 
-  /* ===== MAIN CONTENT ===== */
+  /* ===== COMPACT PHONE-OPTIMIZED COUNTDOWN EDGE ===== */
+  .corner-countdown {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 8px 12px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    text-align: right;
+  }
+
+  .corner-label {
+    font-size: 8px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--turquoise);
+    margin-bottom: 2px;
+  }
+
+  .corner-grid {
+    display: flex;
+    gap: 6px;
+    justify-content: flex-end;
+    align-items: center;
+    font-family: 'Playfair Display', serif;
+  }
+
+  .corner-time-val {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--white);
+  }
+
+  .corner-time-unit {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-left: 1px;
+    font-family: 'Josefin Sans', sans-serif;
+  }
+
+  /* ===== MAIN CONTAINER AND TYPOGRAPHY ===== */
   .main {
     position: relative;
     z-index: 2;
@@ -341,41 +111,30 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    padding: 20px 16px;
-    gap: 0;
+    justify-content: flex-start;
+    padding: 95px 16px 175px;
+    text-align: center;
   }
 
-  /* Title section */
   .title-block {
-    text-align: center;
-    margin-bottom: 18px;
-    animation: fadeSlideDown 1.2s ease-out both;
-  }
-  @keyframes fadeSlideDown {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
+    margin-bottom: 20px;
+    width: 100%;
   }
 
   .eyebrow {
-    font-family: 'Josefin Sans', sans-serif;
-    font-weight: 200;
     font-size: 11px;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     color: var(--turquoise);
-    margin-bottom: 6px;
-    opacity: 0.9;
+    margin-bottom: 4px;
   }
 
   h1 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(28px, 9vw, 42px);
+    font-size: clamp(28px, 7vw, 48px);
     font-weight: 700;
     line-height: 1.1;
-    color: var(--white);
-    text-shadow: 0 2px 20px rgba(0,0,0,0.5);
-    letter-spacing: -0.5px;
+    text-shadow: 0 2px 15px rgba(0,0,0,0.7);
   }
 
   h1 em {
@@ -383,440 +142,280 @@
     color: var(--gold);
     display: block;
     font-size: 0.85em;
+    margin-top: 2px;
   }
 
-  .subtitle {
-    font-weight: 200;
-    font-size: 12px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.65);
-    margin-top: 8px;
+  .meia-tolinha { 
+    font-family: 'Playfair Display', serif; 
+    font-style: italic; 
+    color: var(--gold); 
+    font-size: 13px; 
+    margin-top: 8px; 
+    opacity: 0.9; 
   }
 
-  /* ===== COUNTDOWN BOX ===== */
-  .countdown-card {
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 28px;
-    padding: 28px 20px 24px;
+  /* ===== INTERACTIVE REVEAL KNOWLEDGE CARDS ===== */
+  .fact-showcase {
     width: 100%;
-    max-width: 360px;
-    text-align: center;
-    box-shadow:
-      0 8px 32px rgba(0,0,0,0.3),
-      0 0 0 1px rgba(255,255,255,0.05) inset,
-      0 1px 0 rgba(255,255,255,0.2) inset;
-    animation: fadeSlideUp 1.4s ease-out 0.3s both;
+    max-width: 450px;
+    margin: 15px auto;
     position: relative;
-    overflow: hidden;
+    min-height: 195px;
   }
 
-  .countdown-card::before {
-    content: '';
+  .fact-card {
     position: absolute;
-    top: 0;
-    left: 10%;
-    right: 10%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  }
-
-  @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(40px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .countdown-label {
-    font-size: 10px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.5);
-    margin-bottom: 20px;
-  }
-
-  .countdown-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-
-  .time-unit {
+    inset: 0;
+    background: rgba(2, 17, 26, 0.85);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .time-num {
-    font-family: 'Playfair Display', serif;
-    font-size: clamp(30px, 10vw, 44px);
-    font-weight: 700;
-    color: var(--white);
-    line-height: 1;
-    text-shadow: 0 0 30px rgba(64, 224, 208, 0.5);
-    min-width: 2ch;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .time-num.tick {
-    transform: scale(1.12);
-    color: var(--turquoise);
-  }
-
-  .time-unit-label {
-    font-size: 8px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    font-weight: 300;
-  }
-
-  .colon {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px;
-    color: rgba(255,255,255,0.25);
-    align-self: center;
-    margin-top: -8px;
-    animation: colonBlink 1s step-end infinite;
-  }
-  @keyframes colonBlink {
-    0%, 100% { opacity: 0.25; }
-    50% { opacity: 0.7; }
-  }
-
-  .divider {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-    margin: 4px 0 16px;
-  }
-
-  .flight-info {
-    display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 10px;
-    font-size: 12px;
-    color: rgba(255,255,255,0.6);
-    font-weight: 200;
-    letter-spacing: 1px;
-  }
-  .flight-info .plane { font-size: 18px; animation: planeBounce 2s ease-in-out infinite; }
-  @keyframes planeBounce {
-    0%, 100% { transform: translateX(0) rotate(-30deg); }
-    50% { transform: translateX(5px) rotate(-25deg) translateY(-2px); }
+    align-items: center;
+    opacity: 0;
+    transform: translateY(15px) scale(0.98);
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    pointer-events: none;
   }
 
-  .destination-tag {
-    background: rgba(64, 224, 208, 0.15);
-    border: 1px solid rgba(64, 224, 208, 0.3);
-    border-radius: 20px;
-    padding: 4px 14px;
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: var(--turquoise);
-    font-weight: 400;
+  .fact-card.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
   }
 
-  /* ===== VIBE PILLS ===== */
-  .vibes {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 16px;
-    animation: fadeSlideUp 1.4s ease-out 0.6s both;
-  }
-
-  .vibe-pill {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px;
-    padding: 6px 14px;
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: rgba(255,255,255,0.65);
-    font-weight: 200;
-    white-space: nowrap;
-  }
-
-  /* ===== DATE FOOTER ===== */
-  .fly-date {
-    margin-top: 16px;
-    text-align: center;
-    animation: fadeSlideUp 1.4s ease-out 0.8s both;
-  }
-
-  .fly-date p {
-    font-size: 11px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-  }
-
-  .fly-date strong {
+  .fact-card h3 {
     font-family: 'Playfair Display', serif;
     font-size: 18px;
-    color: rgba(255,255,255,0.8);
-    display: block;
-    margin-top: 3px;
-    letter-spacing: 1px;
-  }
-
-  /* ===== MEIA TOLINHA ===== */
-  .meia-tolinha {
-    font-family: 'Playfair Display', serif;
-    font-style: italic;
-    font-size: clamp(13px, 4vw, 16px);
-    color: var(--gold);
-    letter-spacing: 0.5px;
-    line-height: 1.3;
-    margin-bottom: 18px;
-    text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
-    animation: meiaGlow 3s ease-in-out infinite;
-  }
-  @keyframes meiaGlow {
-    0%, 100% { text-shadow: 0 0 20px rgba(255,215,0,0.4); }
-    50% { text-shadow: 0 0 35px rgba(255,215,0,0.7), 0 0 10px rgba(255,215,0,0.3); }
-  }
-
-  /* ===== LIVE TOTAL SECONDS COUNTER ===== */
-  .live-counter {
-    margin-top: 12px;
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 14px;
-    padding: 10px 18px;
-    text-align: center;
-    animation: fadeSlideUp 1.4s ease-out 0.5s both;
-  }
-
-  .live-counter-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    margin-bottom: 4px;
-  }
-
-  .live-total {
-    font-family: 'Josefin Sans', sans-serif;
-    font-size: clamp(16px, 5vw, 20px);
-    font-weight: 300;
-    letter-spacing: 2px;
-    color: var(--turquoise);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .live-total span {
-    font-size: 10px;
-    color: rgba(255,255,255,0.4);
-    letter-spacing: 1px;
-    margin-left: 4px;
-  }
-
-  /* ===== ARRIVED STATE ===== */
-  .arrived-msg {
-    display: none;
-    text-align: center;
-    animation: fadeSlideUp 1s ease-out both;
-  }
-
-  .arrived-msg h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 36px;
     color: var(--gold);
     margin-bottom: 8px;
   }
 
-  .arrived-msg p {
+  .fact-card p {
     font-size: 14px;
-    color: rgba(255,255,255,0.7);
-    letter-spacing: 2px;
+    line-height: 1.45;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 300;
   }
 
-  /* ===== RESPONSIVE TWEAKS ===== */
+  /* ===== MOBILE PILLS LABELS ===== */
+  .vibes { 
+    display: flex; 
+    gap: 6px; 
+    justify-content: center; 
+    flex-wrap: wrap;
+    max-width: 450px;
+    margin-top: 10px;
+  }
+  
+  .vibe-pill { 
+    background: rgba(0,0,0,0.5); 
+    border: 1px solid rgba(255,255,255,0.1); 
+    border-radius: 12px; 
+    padding: 5px 10px; 
+    font-size: 11px; 
+    color: rgba(255,255,255,0.8); 
+  }
+
+  /* ===== PHONE RESPONSIVE SLIDER CAROUSEL BOARD ===== */
+  .carousel-dock {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 85%, rgba(0,0,0,0));
+    padding: 16px 12px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .carousel-dock::-webkit-scrollbar {
+    display: none;
+  }
+
+  .thumb {
+    width: 78px;
+    height: 78px;
+    border-radius: 14px;
+    background-size: cover;
+    background-position: center;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    cursor: pointer;
+    flex-shrink: 0;
+    scroll-snap-align: center;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+  }
+
+  .thumb.active {
+    border-color: var(--gold);
+    transform: translateY(-5px) scale(1.06);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  }
+
+  .thumb-caption {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    white-space: nowrap;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 0.5px;
+  }
+  
+  .thumb.active .thumb-caption {
+    color: var(--gold);
+    font-weight: 600;
+  }
+
   @media (max-width: 360px) {
-    .countdown-grid { gap: 6px; }
-    h1 { font-size: 26px; }
+    .fact-showcase { min-height: 225px; }
+    .thumb { width: 68px; height: 68px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ===== FOTOGRAFIAS DE CABO VERDE NO FUNDO ===== -->
-<div class="photo-backdrop" aria-hidden="true"><div class="photo-softener"></div></div>
-
-<!-- ===== ANIMATED BACKGROUND SCENE ===== -->
-<div class="bg-scene" aria-hidden="true">
-  <div class="sky-layer"></div>
-  <div class="sun"></div>
-
-  <!-- Clouds -->
-  <div class="cloud c1"></div>
-  <div class="cloud c2"></div>
-  <div class="cloud c3"></div>
-
-  <!-- Seagulls -->
-  <div class="seagull g1">〜</div>
-  <div class="seagull g2">〜</div>
-  <div class="seagull g3">〜</div>
-
-  <!-- Sparkles/stars -->
-  <div class="sparkle" style="top:10%;left:8%;animation-delay:0s">✦</div>
-  <div class="sparkle" style="top:18%;left:85%;animation-delay:1.5s;font-size:10px">✦</div>
-  <div class="sparkle" style="top:6%;left:60%;animation-delay:3s;font-size:8px">✧</div>
-
-  <!-- Ocean -->
-  <div class="ocean"></div>
-  <div class="water-shimmer"></div>
-
-  <!-- Waves -->
-  <div class="waves-container">
-    <div class="wave wave1"></div>
-    <div class="wave wave2"></div>
-    <div class="wave wave3"></div>
-  </div>
-
-  <!-- Foam dots on waves -->
-  <div class="foam-dot" style="bottom:44%;left:15%;width:6px;height:6px;animation-delay:0s"></div>
-  <div class="foam-dot" style="bottom:45%;left:40%;width:4px;height:4px;animation-delay:1s"></div>
-  <div class="foam-dot" style="bottom:43%;left:70%;width:8px;height:8px;animation-delay:2s"></div>
-  <div class="foam-dot" style="bottom:44%;left:85%;width:5px;height:5px;animation-delay:0.5s"></div>
-
-  <!-- Sand beach -->
-  <div class="sand-beach"></div>
-
-  <!-- Palm trees -->
-  <div class="palm palm-left">
-    <div class="palm-trunk"></div>
-    <div class="palm-fronds">
-      <div class="frond" style="transform:rotate(-60deg)"></div>
-      <div class="frond" style="transform:rotate(-30deg)"></div>
-      <div class="frond" style="transform:rotate(0deg)"></div>
-      <div class="frond" style="transform:rotate(30deg)"></div>
-      <div class="frond" style="transform:rotate(60deg)"></div>
-    </div>
-  </div>
-
-  <div class="palm palm-right">
-    <div class="palm-trunk"></div>
-    <div class="palm-fronds">
-      <div class="frond" style="transform:rotate(-50deg)"></div>
-      <div class="frond" style="transform:rotate(-20deg)"></div>
-      <div class="frond" style="transform:rotate(10deg)"></div>
-      <div class="frond" style="transform:rotate(40deg)"></div>
-    </div>
-  </div>
-
-  <!-- Starfish on sand -->
-  <div class="starfish" style="left:40%;animation-delay:0s">🌟</div>
-  <div class="starfish" style="left:60%;animation-delay:2s;font-size:12px">✦</div>
+<!-- ===== HD DIRECT RE-LINKED BG IMAGES ===== -->
+<div class="slider-container" aria-hidden="true">
+  <!-- Imagem 1: Santa Maria turquoise beach pier vibe -->
+  <div class="slide-bg active" style="background-image: url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=1200&q=85');"></div>
+  <!-- Imagem 2: Salt crater lake landscape -->
+  <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=85');"></div>
+  <!-- Imagem 3: Ocean coastal wind surfing elements -->
+  <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1200&q=85');"></div>
+  <!-- Imagem 4: Island shallow volcanic coral reef waters -->
+  <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&w=1200&q=85');"></div>
+  
+  <div class="slider-overlay"></div>
 </div>
 
-<!-- Overlay -->
-<div class="content-overlay"></div>
+<!-- ===== FIXED EDGE CORNER TIMING CONTROLLER ===== -->
+<div class="corner-countdown" id="countdownWidget">
+  <div class="corner-label">⏳ Voo p/ o Sal</div>
+  <div class="corner-grid">
+    <div><span id="days" class="corner-time-val">--</span><span class="corner-time-unit">d</span></div>
+    <div><span id="hours" class="corner-time-val">--</span><span class="corner-time-unit">h</span></div>
+    <div><span id="minutes" class="corner-time-val">--</span><span class="corner-time-unit">m</span></div>
+    <div><span id="seconds" class="corner-time-val">--</span><span class="corner-time-unit">s</span></div>
+  </div>
+</div>
 
-<!-- ===== MAIN CONTENT ===== -->
+<!-- ===== KNOWLEDGE DISPLAY HUB ===== -->
 <main class="main">
 
   <div class="title-block">
-    <p class="eyebrow">✈ Contagem para as Férias</p>
+    <p class="eyebrow">Exploração Local</p>
     <h1>Cabo Verde<em>Ilha do Sal</em></h1>
-    <p class="subtitle">Sol · Areia · Oceano</p>
+    <p class="meia-tolinha">Contagem decrescente para as férias 🌴</p>
   </div>
 
-  <!-- COUNTDOWN CARD -->
-  <div class="countdown-card" id="countdownCard">
-    <p class="countdown-label">✦ a partir daqui ✦</p>
-
-    <p class="meia-tolinha">Tempo que falta para a meia tolinha</p>
-
-    <div class="countdown-grid">
-      <div class="time-unit">
-        <span class="time-num" id="days">--</span>
-        <span class="time-unit-label">dias</span>
-      </div>
-      <div class="time-unit">
-        <span class="time-num" id="hours">--</span>
-        <span class="time-unit-label">horas</span>
-      </div>
-      <div class="time-unit">
-        <span class="time-num" id="minutes">--</span>
-        <span class="time-unit-label">mins</span>
-      </div>
-      <div class="time-unit">
-        <span class="time-num" id="seconds">--</span>
-        <span class="time-unit-label">segs</span>
-      </div>
+  <!-- CENTRAL SWAPPING FACT SHEETS -->
+  <div class="fact-showcase">
+    <!-- Card 0 -->
+    <div class="fact-card active" id="fact-0">
+      <h3>📍 Pontão de Santa Maria</h3>
+      <p>O vibrante centro cultural da ilha. Todos os dias de manhã, pescadores locais trazem peixe fresco diretamente nos seus barcos tradicionais de madeira ("Chalanas"), cercados por quilómetros de mar azul-turquesa cristalino.</p>
     </div>
-
-    <div class="divider"></div>
-
-    <div class="flight-info">
-      <span class="plane">✈</span>
-      <span class="destination-tag">SAL — Aeroporto Amílcar Cabral</span>
+    <!-- Card 1 -->
+    <div class="fact-card" id="fact-1">
+      <h3>📍 Salinas de Pedra de Lume</h3>
+      <p>Uma experiência geológica inesquecível. Localizadas no coração da cratera de um vulcão extinto que se encontra abaixo do nível do mar. A densidade da água devido ao sal permite-te flutuar por completo sem esforço.</p>
+    </div>
+    <!-- Card 2 -->
+    <div class="fact-card" id="fact-2">
+      <h3>📍 Kite Beach & Desportos</h3>
+      <p>Reconhecida internacionalmente como um dos melhores spots do planeta para desportos de vento. Os ventos constantes do Atlântico criam condições perfeitas que atraem kitesurfistas e windsurfistas do mundo inteiro.</p>
+    </div>
+    <!-- Card 3 -->
+    <div class="fact-card" id="fact-3">
+      <h3>📍 Baía dos Tubarões</h3>
+      <p>Um santuário marinho intocado na costa leste da ilha. Equipado com calçado aquático simples, podes caminhar pelas poças de maré rasas e observar tubarões-limão juvenis a nadar calmamente à tua volta.</p>
     </div>
   </div>
 
-  <!-- ARRIVED MESSAGE (shown when countdown ends) -->
-  <div class="arrived-msg" id="arrivedMsg">
-    <h2>🌴 Chegou a hora! 🌴</h2>
-    <p>Aproveita Cabo Verde, linda!</p>
-  </div>
-
-  <!-- Vibe pills -->
+  <!-- Quick Info Badges -->
   <div class="vibes">
-    <span class="vibe-pill">🌊 Ondas do Atlântico</span>
-    <span class="vibe-pill">☀️ 30°C de Sol</span>
-    <span class="vibe-pill">🐠 Snorkeling</span>
-    <span class="vibe-pill">🍹 Caipirinha</span>
-  </div>
-
-  <!-- Live total seconds counter -->
-  <div class="live-counter" id="liveCounter">
-    <p class="live-counter-label">⏱ contador ao vivo</p>
-    <div class="live-total" id="totalSeconds">--<span>segundos</span></div>
-  </div>
-
-  <!-- Flight date -->
-  <div class="fly-date">
-    <p>Data do voo</p>
-    <strong>17 de julho de 2026</strong>
+    <span class="vibe-pill">☀️ Sol Todo o Ano</span>
+    <span class="vibe-pill">🌊 Água Quente</span>
+    <span class="vibe-pill">🦞 Peixe Fresco</span>
+    <span class="vibe-pill">🤙🏽 Morabeza</span>
   </div>
 
 </main>
 
+<!-- ===== SMART SCROLL NAVIGATION COMPONENT ===== -->
+<div class="carousel-dock">
+  <div class="thumb active" style="background-image: url('https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=160&q=80');" onclick="changeSlide(0)">
+    <span class="thumb-caption">St. Maria</span>
+  </div>
+  <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=160&q=80');" onclick="changeSlide(1)">
+    <span class="thumb-caption">Pedra Lume</span>
+  </div>
+  <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=160&q=80');" onclick="changeSlide(2)">
+    <span class="thumb-caption">Kite Beach</span>
+  </div>
+  <div class="thumb" style="background-image: url('https://images.unsplash.com/photo-1551244072-5d12893278ab?auto=format&fit=crop&w=160&q=80');" onclick="changeSlide(3)">
+    <span class="thumb-caption">Shark Bay</span>
+  </div>
+</div>
+
 <script>
-  // ===== SET FLIGHT DATE =====
-  // 17 de julho de 2026 = mês 6 (os meses em JavaScript começam no 0), à meia-noite
-  const flightDate = new Date(2026, 6, 17, 0, 0, 0);
+  // ===== SLIDER CONTENT ENGINE CONTROL =====
+  function changeSlide(index) {
+    // 1. Morph background images smoothly
+    const slides = document.querySelectorAll('.slide-bg');
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[index].classList.add('active');
 
-  // ===== UPDATE COUNTDOWN =====
-  function pad(n) { return String(n).padStart(2, '0'); }
+    // 2. Shift thumbnail border focus states
+    const thumbs = document.querySelectorAll('.thumb');
+    thumbs.forEach(thumb => thumb.classList.remove('active'));
+    thumbs[index].classList.add('active');
 
-  function tick(elementId, newValue) {
-    const el = document.getElementById(elementId);
-    const newText = pad(newValue);
-    if (el.textContent !== newText) {
-      el.textContent = newText;
-      el.classList.remove('tick');
-      void el.offsetWidth; // reflow
-      el.classList.add('tick');
-      setTimeout(() => el.classList.remove('tick'), 300);
-    }
+    // 3. Bring corresponding educational fact sheet forward
+    const facts = document.querySelectorAll('.fact-card');
+    facts.forEach(fact => fact.classList.remove('active'));
+    document.getElementById(`fact-${index}`).classList.add('active');
+    
+    currentSlideIdx = index;
   }
+
+  // Soft auto transition loop every 8 seconds
+  let currentSlideIdx = 0;
+  let autoTimer = setInterval(() => {
+    currentSlideIdx = (currentSlideIdx + 1) % 4;
+    changeSlide(currentSlideIdx);
+  }, 8000);
+
+  // Stop background auto-rotation on user manual touch inputs
+  document.querySelector('.carousel-dock').addEventListener('touchstart', () => {
+    clearInterval(autoTimer);
+  }, {passive: true});
+
+  // ===== TIMER STABLE RUNNER =====
+  const flightDate = new Date(2026, 6, 17, 0, 0, 0); // 17 de Julho de 2026
+
+  function pad(n) { return String(n).padStart(2, '0'); }
 
   function updateCountdown() {
     const now = new Date();
     const diff = flightDate - now;
 
     if (diff <= 0) {
-      document.getElementById('countdownCard').style.display = 'none';
-      document.getElementById('arrivedMsg').style.display = 'block';
+      document.getElementById('countdownWidget').innerHTML = "<div class='corner-label'>🌴 Boas Férias!</div>";
       return;
     }
 
@@ -826,25 +425,14 @@
     const minutes = Math.floor((totalSeconds % 3600) / 60);
     const seconds = totalSeconds % 60;
 
-    tick('days',    days);
-    tick('hours',   hours);
-    tick('minutes', minutes);
-    tick('seconds', seconds);
-
-    // Live total seconds counter
-    const totalEl = document.getElementById('totalSeconds');
-    if (totalEl) {
-      totalEl.innerHTML = totalSeconds.toLocaleString('pt-PT') + '<span>segundos</span>';
-    }
+    document.getElementById('days').textContent = pad(days);
+    document.getElementById('hours').textContent = pad(hours);
+    document.getElementById('minutes').textContent = pad(minutes);
+    document.getElementById('seconds').textContent = pad(seconds);
   }
 
   updateCountdown();
   setInterval(updateCountdown, 1000);
-
-  // ===== Update flight date display =====
-  document.querySelector('.fly-date strong').textContent = flightDate.toLocaleDateString('pt-PT', {
-    day: 'numeric', month: 'long', year: 'numeric'
-  });
 </script>
 </body>
 </html>
